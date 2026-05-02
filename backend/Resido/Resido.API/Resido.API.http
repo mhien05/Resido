@@ -1,0 +1,6 @@
+@Resido.API_HostAddress = http://localhost:5214
+
+GET {{Resido.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
