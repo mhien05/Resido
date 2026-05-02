@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using Resido.API.Models;
+
 namespace Resido.API
 {
     public class Program
@@ -13,6 +16,12 @@ namespace Resido.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            
+
+            builder.Services.AddDbContext<ResidoDbContext>(options =>
+                options.UseSqlServer(builder.Configuration
+                    .GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
