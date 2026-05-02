@@ -1,0 +1,169 @@
+# ==============================================
+# RESIDO — .gitignore
+# Stack: ASP.NET Core Web API + ReactJS
+# ==============================================
+
+
+# ==============================================
+# BACKEND — .NET / ASP.NET Core
+# ==============================================
+
+# Build output
+backend/**/bin/
+backend/**/obj/
+
+# Visual Studio files
+backend/**/*.user
+backend/**/*.suo
+backend/**/.vs/
+backend/**/[Dd]ebug/
+backend/**/[Rr]elease/
+
+# NuGet packages (restore từ .csproj, không cần commit)
+backend/**/packages/
+backend/**/*.nupkg
+backend/**/.nuget/
+
+# Entity Framework migrations snapshot (optional — tùy team)
+# Nếu mày muốn track migrations thì bỏ dòng này
+# backend/**/Migrations/
+
+# Publish output
+backend/**/publish/
+backend/**/out/
+
+# Runtime & logs
+backend/**/logs/
+backend/**/*.log
+backend/**/nlog.config.local
+
+# App settings chứa secrets — KHÔNG bao giờ commit cái này
+backend/**/appsettings.Local.json
+backend/**/appsettings.Development.json
+backend/**/appsettings.Production.json
+
+# Chỉ commit file này làm template, các môi trường cụ thể ignore hết
+# (giữ appsettings.json gốc để làm reference)
+
+# User secrets
+backend/**/**/secrets.json
+backend/**/.secrets/
+
+# Test results
+backend/**/TestResults/
+backend/**/*.trx
+backend/**/*.coveragexml
+
+# Rider / JetBrains
+backend/**/.idea/
+backend/**/*.DotSettings.user
+
+# Resharper
+backend/**/_ReSharper*/
+backend/**/*.ReSharper
+
+# Windows
+backend/**/Thumbs.db
+backend/**/Desktop.ini
+
+
+# ==============================================
+# FRONTEND — ReactJS (Vite hoặc CRA)
+# ==============================================
+
+# Dependencies — luôn restore bằng npm install
+frontend/node_modules/
+
+# Build output
+frontend/dist/
+frontend/build/
+frontend/.next/
+frontend/out/
+
+# Cache
+frontend/.vite/
+frontend/.cache/
+frontend/.parcel-cache/
+
+# Environment files — chứa API URL, keys
+frontend/.env
+frontend/.env.local
+frontend/.env.development
+frontend/.env.production
+frontend/.env.*.local
+
+# Chỉ commit file này làm template
+# frontend/.env.example   ← nên tạo file này và commit
+
+# Coverage
+frontend/coverage/
+
+# Editor
+frontend/.DS_Store
+frontend/Thumbs.db
+
+# Storybook
+frontend/storybook-static/
+
+# TypeScript
+frontend/*.tsbuildinfo
+
+
+# ==============================================
+# DOCS & ROOT
+# ==============================================
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Editor configs (tuỳ — nếu team dùng chung thì có thể commit)
+.vscode/settings.json
+.vscode/launch.json
+# Nhưng nên commit:
+# .vscode/extensions.json  ← gợi ý extension cho teammate
+
+# Rider / IntelliJ
+.idea/
+
+# Docker (nếu dùng)
+# docker-compose.override.yml   ← thường chứa local config, nên ignore
+
+# Zip / archive
+*.zip
+*.tar.gz
+*.rar
+
+# Logs ở root
+*.log
+logs/
+
+
+# ==============================================
+# SECURITY — KHÔNG BAO GIỜ COMMIT
+# ==============================================
+
+# Private keys, certs
+*.pem
+*.key
+*.pfx
+*.p12
+*.cer
+
+# AWS / cloud credentials
+.aws/
+.gcp/
+*.credentials
+
+# JWT secret, connection string dạng file rời
+secrets/
+.secrets
+
+#etc
+.vs/
