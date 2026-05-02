@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Resido.API.DTOs.Requests;
 using Resido.API.DTOs.Responses;
@@ -9,7 +8,6 @@ using Resido.API.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using LoginRequest = Resido.API.DTOs.Requests.LoginRequest;
 
 namespace Resido.API.Services
 {
@@ -27,12 +25,6 @@ namespace Resido.API.Services
         public async Task<LoginResponse?> LoginAsync(LoginRequest request)
         {
             // 1. Tìm user theo username
-            //var user = await _context.Users
-            //    .FirstOrDefaultAsync(u => u.Username == request.Username
-            //                           && u.IsActive);
-
-            //if (user == null) return null;
-
             var user = await _userRepository.GetByUsernameAsync(request.Username);
 
             if (user == null) return null;
