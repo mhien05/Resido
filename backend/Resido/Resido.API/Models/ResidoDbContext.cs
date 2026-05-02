@@ -9,7 +9,8 @@ namespace Resido.API.Models
 
         public DbSet<Property> Properties { get; set; }
         public DbSet<Room> Rooms { get; set; }
-        public DbSet<RentalContract> RentalContracts { get; set; } 
+        public DbSet<RentalContract> RentalContracts { get; set; }
+        public DbSet<User> Users { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +38,23 @@ namespace Resido.API.Models
                  .WithMany(x => x.Rooms)
                  .HasForeignKey(x => x.PropertyId)
                  .OnDelete(DeleteBehavior.Restrict);
+            });
+            
+            // User
+            modelBuilder.Entity<User>(e =>
+            {
+                e.HasKey(x => x.Id);
+                e.Property(x => x.Username).IsRequired().HasMaxLength(100);
+                e.Property(x => x.PasswordHash).IsRequired();
+                e.Property(x => x.FullName).IsRequired().HasMaxLength(200);
+                e.Property(x => x.Role).IsRequired().HasMaxLength(50);
+
+                e.HasIndex(x => x.Username).IsUnique();
+
+                e.HasOne(x => x.Property)
+                 .WithMany()
+                 .HasForeignKey(x => x.PropertyId)
+                 .OnDelete(DeleteBehavior.SetNull);
             });
         }
     }
