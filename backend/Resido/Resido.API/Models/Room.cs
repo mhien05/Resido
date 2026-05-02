@@ -17,6 +17,6 @@ namespace Resido.API.Models
 
         // Navigation properties
         public Property Property { get; set; } = null!;
-        public ICollection<Contract> Contracts { get; set; } = new List<Contract>();
+        public ICollection<RentalContract> RentalContract { get; set; } = new List<RentalContract>();
     }
 }
