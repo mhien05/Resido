@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Resido.API.Controllers;
 using Resido.API.Models;
+using Resido.API.Repositories;
+using Resido.API.Repositories.Interfaces;
 using Resido.API.Services;
 using Resido.API.Services.Interfaces;
 using System.Text;
@@ -24,6 +26,9 @@ namespace Resido.API
 
             // Services
             builder.Services.AddScoped<IAuthService, AuthService>();
+
+            // Repositories
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             // JWT Authentication
             var jwtKey = builder.Configuration["Jwt:Key"]!;
