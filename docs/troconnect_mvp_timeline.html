@@ -1,0 +1,201 @@
+
+<style>
+  h2.sr-only { position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0); }
+  .phase-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; cursor:pointer; transition: border-color .15s; }
+  .phase-card:hover { border-color: var(--color-border-secondary); }
+  .phase-card.active { border-color: var(--color-border-primary); }
+  .phase-header { display:flex; align-items:center; gap:10px; }
+  .badge { font-size:11px; padding:3px 10px; border-radius:20px; font-weight:500; white-space:nowrap; }
+  .badge-purple { background:var(--color-background-info); color:var(--color-text-info); }
+  .badge-teal   { background:#E1F5EE; color:#0F6E56; }
+  .badge-amber  { background:#FAEEDA; color:#854F0B; }
+  .badge-coral  { background:#FAECE7; color:#993C1D; }
+  .badge-green  { background:#EAF3DE; color:#3B6D11; }
+  .badge-gray   { background:var(--color-background-secondary); color:var(--color-text-secondary); }
+  @media (prefers-color-scheme: dark) {
+    .badge-teal   { background:#085041; color:#9FE1CB; }
+    .badge-amber  { background:#633806; color:#FAC775; }
+    .badge-coral  { background:#4A1B0C; color:#F5C4B3; }  
+    .badge-green  { background:#173404; color:#C0DD97; }
+  }
+  .phase-title { font-size:15px; font-weight:500; color:var(--color-text-primary); flex:1; }
+  .week-pill { font-size:12px; color:var(--color-text-secondary); }
+  .chevron { font-size:12px; color:var(--color-text-tertiary); transition:transform .2s; }
+  .chevron.open { transform:rotate(90deg); }
+  .phase-body { display:none; margin-top:12px; padding-top:12px; border-top:0.5px solid var(--color-border-tertiary); }
+  .phase-body.show { display:block; }
+  .task-row { display:flex; align-items:flex-start; gap:8px; margin-bottom:8px; }
+  .task-dot { width:6px; height:6px; border-radius:50%; margin-top:6px; flex-shrink:0; }
+  .task-text { font-size:13px; color:var(--color-text-primary); line-height:1.5; }
+  .task-sub  { font-size:12px; color:var(--color-text-secondary); margin-top:1px; }
+  .screen-chip { display:inline-block; font-size:11px; padding:2px 8px; border-radius:20px; border:0.5px solid var(--color-border-secondary); margin:2px; color:var(--color-text-secondary); }
+  .note-box { margin-top:10px; padding:8px 12px; border-left:2px solid var(--color-border-info); border-radius:0 var(--border-radius-md) var(--border-radius-md) 0; background:var(--color-background-info); }
+  .note-box p { font-size:12px; color:var(--color-text-info); margin:0; line-height:1.5; }
+  .timeline-bar { display:flex; gap:4px; margin: 0 0 16px; }
+  .tbar { height:6px; border-radius:3px; flex:1; }
+  .total-weeks { font-size:12px; color:var(--color-text-secondary); margin-bottom:16px; }
+</style>
+
+<h2 class="sr-only">TroConnect MVP – kế hoạch timeline theo 5 phase, tổng ~12 tuần</h2>
+
+<div style="margin-bottom:4px;">
+  <span style="font-size:13px; font-weight:500; color:var(--color-text-secondary);">TROCONNECT / MVP TIMELINE</span>
+</div>
+<div class="total-weeks">Tổng ước tính: <strong>12 – 14 tuần</strong> · vừa học vừa build · 1 người</div>
+
+<div class="timeline-bar">
+  <div class="tbar" style="background:#CECBF6" title="Phase 0"></div>
+  <div class="tbar" style="flex:3;background:#9FE1CB" title="Phase 1"></div>
+  <div class="tbar" style="flex:3;background:#FAC775" title="Phase 2"></div>
+  <div class="tbar" style="flex:2;background:#F5C4B3" title="Phase 3"></div>
+  <div class="tbar" style="flex:2;background:#C0DD97" title="Phase 4"></div>
+</div>
+
+<div id="phases"></div>
+
+<script>
+const phases = [
+  {
+    id: 0,
+    label: "Phase 0",
+    badgeClass: "badge-purple",
+    title: "Setup & nền tảng",
+    weeks: "1 – 2 tuần",
+    dotColor: "#7F77DD",
+    tasks: [
+      { text: "Setup solution ASP.NET Core Web API", sub: "Folder structure, layered architecture (Controller → Service → Repo)" },
+      { text: "Thiết kế database schema", sub: "Entity: Property, Room, Tenant, Contract, UtilityRecord, Invoice, Payment, Ticket, User" },
+      { text: "Code JWT Authentication (SC-01)", sub: "Login, issue token, refresh token, role-based middleware" },
+      { text: "Chọn FE stack & scaffold", sub: "React + Vite hoặc Next.js, cài shadcn/ui hoặc Ant Design" },
+    ],
+    screens: ["SC-01"],
+    note: "Đây là phase quan trọng nhất. DB schema sai ở đây sẽ gây đau đầu toàn bộ phase sau. Dành thời gian vẽ ERD trước khi code.",
+    noteType: "warning"
+  },
+  {
+    id: 1,
+    label: "Phase 1",
+    badgeClass: "badge-teal",
+    title: "Vận hành cốt lõi",
+    weeks: "3 – 4 tuần",
+    dotColor: "#1D9E75",
+    tasks: [
+      { text: "API quản lý khu trọ & phòng", sub: "CRUD rooms, filter theo trạng thái, soft delete ('ngừng khai thác')" },
+      { text: "API hồ sơ người thuê", sub: "CRUD tenant, tìm kiếm theo CCCD/SĐT/phòng, upload tài liệu" },
+      { text: "API hợp đồng", sub: "Tạo/gia hạn/kết thúc hợp đồng, validate trùng active, business rule BR-01" },
+      { text: "FE: SC-03 + SC-05 + SC-06", sub: "Vibe code 3 màn này song song với API, test luồng tạo hợp đồng end-to-end" },
+    ],
+    screens: ["SC-03", "SC-05", "SC-06"],
+    note: "Luồng: Tạo phòng → Tạo người thuê → Gắn hợp đồng. Xong phase này tức là 'bộ xương' vận hành đã chạy được.",
+    noteType: "info"
+  },
+  {
+    id: 2,
+    label: "Phase 2",
+    badgeClass: "badge-amber",
+    title: "Chu kỳ tài chính tháng",
+    weeks: "3 – 4 tuần",
+    dotColor: "#BA7517",
+    tasks: [
+      { text: "API nhập chỉ số điện nước", sub: "Validate chỉ số mới ≥ kỳ trước, override flow, tính tiêu thụ tự động (BR-03)" },
+      { text: "API lập hóa đơn tháng", sub: "Gom tiền phòng + điện + nước + dịch vụ + giảm trừ, re-issue với version history (BR-02)" },
+      { text: "API thanh toán & công nợ", sub: "Ghi nhận nhiều lần thanh toán / hóa đơn, cảnh báo vượt ngưỡng (BR-04)" },
+      { text: "FE: SC-04 + SC-07 + SC-08", sub: "Preview realtime khi nhập chỉ số, bảng hóa đơn theo kỳ, form tạo phiếu thu" },
+    ],
+    screens: ["SC-04", "SC-07", "SC-08"],
+    note: "Phase này có nhiều business rule nhất — bắt buộc code tay backend, đừng để AI generate blind. Test kỹ edge case: chỉ số ngược chiều, partial payment, re-issue.",
+    noteType: "warning"
+  },
+  {
+    id: 3,
+    label: "Phase 3",
+    badgeClass: "badge-coral",
+    title: "Bảo trì & báo cáo",
+    weeks: "2 – 3 tuần",
+    dotColor: "#D85A30",
+    tasks: [
+      { text: "API bảo trì / ticket", sub: "Tạo ticket theo phòng, phân công nhân sự, theo dõi SLA, ghi chi phí vật tư" },
+      { text: "API báo cáo doanh thu", sub: "Tổng hợp theo tháng/quý/khu trọ, công nợ theo người thuê/phòng" },
+      { text: "FE: SC-09 + SC-10", sub: "List view ticket + detail panel, chart doanh thu 6 tháng, bảng công nợ" },
+      { text: "Notifications nội hệ thống", sub: "Hợp đồng sắp hết hạn, hóa đơn quá hạn, ticket vượt SLA" },
+    ],
+    screens: ["SC-09", "SC-10", "SC-02"],
+    note: "Dashboard (SC-02) build ở đây sau cùng vì nó aggregate data từ tất cả module trước.",
+    noteType: "info"
+  },
+  {
+    id: 4,
+    label: "Phase 4",
+    badgeClass: "badge-green",
+    title: "Hệ thống & hoàn thiện",
+    weeks: "2 tuần",
+    dotColor: "#639922",
+    tasks: [
+      { text: "Phân quyền & audit log (SC-11)", sub: "Role-based access, giới hạn theo khu trọ, log before/after cho thao tác nhạy cảm" },
+      { text: "Refactor backend", sub: "Dọn dẹp code từ 3 phase trước, đảm bảo error handling nhất quán, viết một số unit test" },
+      { text: "Polish FE & responsive", sub: "Fix UX edge case, loading state, empty state, error state cho các màn hình" },
+      { text: "Deploy thử", sub: "Railway hoặc Render cho backend, Vercel cho FE — test môi trường production" },
+    ],
+    screens: ["SC-11"],
+    note: "Đây là lúc thực hiện cam kết 'refactor sau' mà tao nhắc ở trên. Không skip phase này.",
+    noteType: "warning"
+  }
+];
+
+const noteColors = {
+  warning: { bg: "var(--color-background-warning)", border: "var(--color-border-warning)", text: "var(--color-text-warning)" },
+  info:    { bg: "var(--color-background-info)",    border: "var(--color-border-info)",    text: "var(--color-text-info)" }
+};
+
+const container = document.getElementById("phases");
+
+phases.forEach(p => {
+  const card = document.createElement("div");
+  card.className = "phase-card";
+  card.dataset.id = p.id;
+
+  const tasksHTML = p.tasks.map(t => `
+    <div class="task-row">
+      <div class="task-dot" style="background:${p.dotColor}"></div>
+      <div>
+        <div class="task-text">${t.text}</div>
+        <div class="task-sub">${t.sub}</div>
+      </div>
+    </div>
+  `).join("");
+
+  const screensHTML = p.screens.map(s => `<span class="screen-chip">${s}</span>`).join("");
+
+  const nc = noteColors[p.noteType] || noteColors.info;
+
+  card.innerHTML = `
+    <div class="phase-header">
+      <span class="badge ${p.badgeClass}">${p.label}</span>
+      <span class="phase-title">${p.title}</span>
+      <span class="week-pill">${p.weeks}</span>
+      <span class="chevron" id="chev-${p.id}">›</span>
+    </div>
+    <div class="phase-body" id="body-${p.id}">
+      <div style="margin-bottom:10px;">${tasksHTML}</div>
+      <div style="margin-bottom:6px;">
+        <span style="font-size:11px;color:var(--color-text-tertiary);margin-right:4px;">Màn hình:</span>
+        ${screensHTML}
+      </div>
+      <div class="note-box" style="background:${nc.bg};border-color:${nc.border};">
+        <p style="color:${nc.text};">📌 ${p.note}</p>
+      </div>
+    </div>
+  `;
+
+  card.addEventListener("click", () => {
+    const body = document.getElementById(`body-${p.id}`);
+    const chev = document.getElementById(`chev-${p.id}`);
+    const isOpen = body.classList.contains("show");
+    body.classList.toggle("show", !isOpen);
+    chev.classList.toggle("open", !isOpen);
+    card.classList.toggle("active", !isOpen);
+  });
+
+  container.appendChild(card);
+});
+</script>
