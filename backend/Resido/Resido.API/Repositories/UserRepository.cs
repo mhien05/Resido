@@ -14,7 +14,8 @@ namespace Resido.API.Repositories
         public async Task<User?> GetByUsernameAsync(string username)
         {
             return await _dbContext.Users
-                .FirstOrDefaultAsync(u => u.Username == username);
+                .FirstOrDefaultAsync(u => u.Username == username
+                                            && u.IsActive);
         }
     }
 }
