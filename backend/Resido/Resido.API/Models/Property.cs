@@ -9,6 +9,8 @@
         public Guid OwnerId { get; set; }
         public bool IsActive { get; set; } = true;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; } = false;
+        public DateTime? DeletedAt { get; set; } = null;
 
         // Navigation properties
         public ICollection<Room> Rooms { get; set; } = new List<Room>();
