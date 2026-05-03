@@ -22,7 +22,7 @@ namespace Resido.API.Repositories.Implements
         public async Task DeleteAsync(Room room)
         {
             room.IsDeleted = true;
-            room.DeletedAt = DateTime.Now;
+            room.DeletedAt = DateTime.UtcNow;
 
             _dbContext.Update(room);
             await _dbContext.SaveChangesAsync();
@@ -64,7 +64,7 @@ namespace Resido.API.Repositories.Implements
 
         public async Task UpdateAsync(Room room)
         {
-            room.UpdatedAt = DateTime.Now;
+            room.UpdatedAt = DateTime.UtcNow;
 
             _dbContext.Rooms.Update(room);
             await _dbContext.SaveChangesAsync();
