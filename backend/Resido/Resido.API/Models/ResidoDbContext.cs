@@ -27,7 +27,10 @@ namespace Resido.API.Models
             {
                 e.HasKey(x => x.Id);
                 e.Property(x => x.Code).IsRequired().HasMaxLength(50);
-                e.Property(x => x.Status).HasMaxLength(50);
+                //e.Property(x => x.Status).HasMaxLength(50);
+                e.Property(x => x.Status)
+                     .HasConversion<string>()
+                     .HasMaxLength(50);
                 e.Property(x => x.RentPrice).HasColumnType("decimal(18,2)");
                 e.Property(x => x.ElectricPrice).HasColumnType("decimal(18,2)");
                 e.Property(x => x.WaterPrice).HasColumnType("decimal(18,2)");
