@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-
+﻿
 namespace Resido.API.Models
 {
     public class Room
@@ -14,6 +13,10 @@ namespace Resido.API.Models
         public decimal WaterPrice { get; set; }
         public decimal ServiceFee { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; } = null;
+        public DateTime? DeletedAt { get; set; } = null;
+        public bool isDeleted { get; set; } = false;
+
 
         // Navigation properties
         public Property Property { get; set; } = null!;
