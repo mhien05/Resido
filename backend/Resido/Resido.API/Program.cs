@@ -5,9 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Resido.API.Controllers;
 using Resido.API.Models;
-using Resido.API.Repositories;
+using Resido.API.Repositories.Implements;
 using Resido.API.Repositories.Interfaces;
-using Resido.API.Services;
+using Resido.API.Services.Implements;
 using Resido.API.Services.Interfaces;
 using System.Text;
 
