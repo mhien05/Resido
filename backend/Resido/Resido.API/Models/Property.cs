@@ -11,6 +11,7 @@
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public bool IsDeleted { get; set; } = false;
         public DateTime? DeletedAt { get; set; } = null;
+        public DateTime? UpdatedAt { get; set; } = null;
 
         // Navigation properties
         public ICollection<Room> Rooms { get; set; } = new List<Room>();
