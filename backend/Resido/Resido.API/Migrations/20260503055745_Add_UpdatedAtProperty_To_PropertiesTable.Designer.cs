@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Resido.API.Models;
 
@@ -11,9 +12,11 @@ using Resido.API.Models;
 namespace Resido.API.Migrations
 {
     [DbContext(typeof(ResidoDbContext))]
-    partial class ResidoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260503055745_Add_UpdatedAtProperty_To_PropertiesTable")]
+    partial class Add_UpdatedAtProperty_To_PropertiesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
