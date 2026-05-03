@@ -1,33 +1,55 @@
-﻿using Resido.API.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Resido.API.Models;
 using Resido.API.Repositories.Interfaces;
 
 namespace Resido.API.Repositories.Implements
 {
     public class PropertyRepository : IPropertyRepository
     {
-        public Task AddAsync(Property property)
+        private readonly ResidoDbContext _dbContext;
+
+        public PropertyRepository(ResidoDbContext dbContext)
         {
-            throw new NotImplementedException();
+            _dbContext = dbContext;
         }
 
-        public Task DeleteAsync(Property property)
+        public async Task AddAsync(Property property)
         {
-            throw new NotImplementedException();
+            await _dbContext.AddAsync(property);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Property>> GetAllAsync()
+        public async Task DeleteAsync(Property property)
         {
-            throw new NotImplementedException();
+            property.IsDeleted = true;
+            property.DeletedAt = DateTime.UtcNow;
+
+            _dbContext.Properties.Update(property);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task<Property?> GetByIdAsync(Guid id)
+        public async Task<IEnumerable<Property>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Properties
+                .AsNoTracking()
+                .Where(x => !x.IsDeleted)
+                .OrderByDescending(x => x.CreatedAt)
+                .ToListAsync();
         }
 
-        public Task UpdateAsync(Property property)
+        public async Task<Property?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Properties
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x=>x.Id == id && !x.IsDeleted);
+        }
+
+        public async Task UpdateAsync(Property property)
+        {
+            property.UpdatedAt = DateTime.UtcNow;
+
+            _dbContext.Properties.Update(property);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
