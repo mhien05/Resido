@@ -55,7 +55,6 @@ namespace Resido.API.Services
             var expiresInMinutes = int.Parse(_config["Jwt:ExpiresInMinutes"]!);
             var expiresAt = DateTime.UtcNow.AddMinutes(expiresInMinutes);
 
-            // Claims là thông tin mày nhúng vào trong token
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
