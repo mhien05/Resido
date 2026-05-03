@@ -8,17 +8,30 @@ namespace Resido.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+
+    /// <summary>
+    /// Controller xử lý các API liên quan đến xác thực người dùng
+    /// </summary>
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
+        // DI AuthService
+        private readonly IAuthService _authService; // Service xử lý logic auth
 
+
+        /// <summary>
+        /// Constructor - ASP.NET tự inject IAuthService qua DI Container
+        /// </summary>
         public AuthController(IAuthService authService)
         {
-            _authService = authService;
+            _authService = authService; // Gắn vào field để dùng trong toàn controller
         }
 
+
+        /// <summary>
+        /// API login xử lý logic đăng nhập 
+        /// </summary>
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request) // FromBody nhận dữ liệu trong request body
         {
             var response = await _authService.LoginAsync(request);
 
