@@ -1,4 +1,5 @@
-﻿using Resido.API.Enums;
+﻿using Microsoft.EntityFrameworkCore;
+using Resido.API.Enums;
 using Resido.API.Models;
 using Resido.API.Repositories.Interfaces;
 
@@ -18,34 +19,56 @@ namespace Resido.API.Repositories.Implements
             await _dbContext.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(Room room)
+        public async Task DeleteAsync(Room room)
         {
-            throw new NotImplementedException();
+            room.IsDeleted = true;
+            room.DeletedAt = DateTime.Now;
+
+            _dbContext.Update(room);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Room>> GetAllAsync()
+        public async Task<IEnumerable<Room>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _dbContext.Rooms
+                .AsNoTracking()
+                .Where(r => !r.IsDeleted) 
+                .OrderByDescending(r => r.CreatedAt)
+                .ToListAsync();
         }
 
-        public Task<Room?> GetByIdAsync(Guid id)
+        public async Task<Room?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Rooms
+                .AsNoTracking()
+                .FirstOrDefaultAsync(r => r.Id == id && !r.IsDeleted);
         }
 
-        public Task<IEnumerable<Room>> GetByPropertyIdAsync(Guid propertyId)
+        public async Task<IEnumerable<Room>> GetByPropertyIdAsync(Guid propertyId)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Rooms
+                .AsNoTracking()
+                .Where(r => r.PropertyId == propertyId && !r.IsDeleted)
+                .OrderByDescending (r => r.CreatedAt)
+                .ToListAsync();
         }
 
-        public Task<IEnumerable<Room>> GetByStatusAsync(RoomStatus status)
+        public async Task<IEnumerable<Room>> GetByStatusAsync(RoomStatus status)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Rooms
+                .AsNoTracking()
+                .Where(r => r.Status == status && !r.IsDeleted)
+                .OrderByDescending(r => r.CreatedAt)
+                .ToListAsync();
         }
 
-        public Task UpdateAsync(Room room)
+        public async Task UpdateAsync(Room room)
         {
-            throw new NotImplementedException();
+            room.UpdatedAt = DateTime.Now;
+
+            _dbContext.Rooms.Update(room);
+            await _dbContext.SaveChangesAsync();
+            
         }
     }
 }
