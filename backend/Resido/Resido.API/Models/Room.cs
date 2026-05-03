@@ -1,4 +1,6 @@
 ﻿
+using Resido.API.Enums;
+
 namespace Resido.API.Models
 {
     public class Room
@@ -7,7 +9,7 @@ namespace Resido.API.Models
         public Guid PropertyId { get; set; }
         public string Code { get; set; } = string.Empty;
         public int Floor { get; set; }
-        public string Status { get; set; } = "Available";
+        public RoomStatus Status { get; set; } = RoomStatus.Available;
         public decimal RentPrice { get; set; }
         public decimal ElectricPrice { get; set; }
         public decimal WaterPrice { get; set; }
