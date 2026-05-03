@@ -1,7 +1,4 @@
-﻿using Resido.API.Enums;
-using System.Data.SqlTypes;
-
-namespace Resido.API.DTOs.Responses
+﻿namespace Resido.API.DTOs.Responses
 {
     public class RoomResponse
     {
@@ -14,7 +11,7 @@ namespace Resido.API.DTOs.Responses
         public decimal ElectricPrice { get; set; }
         public decimal WaterPrice { get; set; }
         public decimal ServiceFee { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? UpdatedAt { get; set; } = null;
+        public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }
