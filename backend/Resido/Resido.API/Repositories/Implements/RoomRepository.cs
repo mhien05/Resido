@@ -15,6 +15,9 @@ namespace Resido.API.Repositories.Implements
 
         public async Task AddAsync(Room room)
         {
+            // Set thời gian tạo
+            room.CreatedAt = DateTime.UtcNow;
+
             await _dbContext.AddAsync(room);
             await _dbContext.SaveChangesAsync();
         }
