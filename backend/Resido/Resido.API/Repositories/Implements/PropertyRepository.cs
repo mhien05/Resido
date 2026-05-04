@@ -15,13 +15,19 @@ namespace Resido.API.Repositories.Implements
 
         public async Task AddAsync(Property property)
         {
+            // Set thời gian tạo 
+            property.CreatedAt = DateTime.UtcNow;
+
             await _dbContext.AddAsync(property);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(Property property)
         {
+            // Set trường đã bị xóa chưa = true
             property.IsDeleted = true;
+
+            // Set thời gian xóa
             property.DeletedAt = DateTime.UtcNow;
 
             _dbContext.Properties.Update(property);
@@ -46,6 +52,7 @@ namespace Resido.API.Repositories.Implements
 
         public async Task UpdateAsync(Property property)
         {
+            // Set thời gian update thông tin
             property.UpdatedAt = DateTime.UtcNow;
 
             _dbContext.Properties.Update(property);
