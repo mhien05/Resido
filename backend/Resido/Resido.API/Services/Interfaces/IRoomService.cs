@@ -1,6 +1,6 @@
 ﻿using Resido.API.DTOs.Requests;
 using Resido.API.DTOs.Responses;
-using Resido.API.Repositories.Implements;
+using Resido.API.Enums;
 
 namespace Resido.API.Services.Interfaces
 {
@@ -13,6 +13,6 @@ namespace Resido.API.Services.Interfaces
         public Task DeleteAsync(Guid id);
 
         public Task<IEnumerable<RoomResponse>> GetByPropertyIdAsync(Guid propertyId);
-        public Task<IEnumerable<RoomResponse>> GetByStatusAsync(string status);
+        public Task<IEnumerable<RoomResponse>> GetByStatusAsync(RoomStatus status);
     }
 }
