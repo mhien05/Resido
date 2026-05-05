@@ -18,26 +18,33 @@ namespace Resido.API.Services.Implements
             _propertyRepository = propertyRepository;
         }
 
-        public Task CreateAsync(RoomRequest request)
+        public async Task CreateAsync(RoomRequest request)
         {
-            // Kiểm tra property với id từ request
-            var property = _propertyRepository.GetByIdAsync(request.PropertyId);
+            // ✅ Thêm await
+            var property = await _propertyRepository.GetByIdAsync(request.PropertyId);
 
-            // Check property có null không
-            if(property == null)
+            if (property == null)
                 throw new KeyNotFoundException($"Property với ID {request.PropertyId} không tồn tại");
 
-            // Mapping thông tin từ request -> entity
+            // Thêm validation: Property phải active mới tạo room được
+            if (!property.IsActive)
+                throw new InvalidOperationException($"Không thể tạo phòng cho Property không hoạt động");
+
             var room = new Room
             {
+                Id = Guid.NewGuid(),
                 PropertyId = request.PropertyId,
                 Code = request.Code,
+                Floor = request.Floor,
                 Status = request.Status,
                 RentPrice = request.RentPrice,
                 ElectricPrice = request.ElectricPrice,
                 WaterPrice = request.WaterPrice,
-                ServiceFee = request.ServiceFee   
+                ServiceFee = request.ServiceFee
             };
+
+            // Save vào database
+            await _roomRepository.AddAsync(room);
         }
 
         public Task DeleteAsync(Guid id)
