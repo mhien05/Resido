@@ -1,0 +1,198 @@
+
+<style>
+h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+#erd svg { width:100% !important; }
+#erd svg .er { font-family: var(--font-sans) !important; }
+</style>
+<h2 class="sr-only">ERD diagram cho dự án Resido gồm 10 entity: User, Property, Room, Tenant, Contract, UtilityRecord, Invoice, InvoiceLine, Payment, Ticket với đầy đủ quan hệ khóa ngoại</h2>
+<div id="erd" style="padding:4px 0"></div>
+<script type="module">
+import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
+const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+await document.fonts.ready;
+mermaid.initialize({
+  startOnLoad: false,
+  theme: 'base',
+  fontFamily: '"Anthropic Sans", sans-serif',
+  themeVariables: {
+    darkMode: dark,
+    fontSize: '13px',
+    fontFamily: '"Anthropic Sans", sans-serif',
+    lineColor: dark ? '#9c9a92' : '#73726c',
+    textColor: dark ? '#c2c0b6' : '#3d3d3a',
+    primaryColor: dark ? '#2C2C2A' : '#F1EFE8',
+    primaryBorderColor: dark ? '#5F5E5A' : '#B4B2A9',
+    primaryTextColor: dark ? '#c2c0b6' : '#3d3d3a',
+  },
+});
+
+const diagram = `erDiagram
+  USER {
+    uuid id PK
+    string username
+    string password_hash
+    string full_name
+    string role
+    uuid property_id FK
+    bool is_active
+    timestamp created_at
+  }
+
+  PROPERTY {
+    uuid id PK
+    string name
+    string address
+    string description
+    uuid owner_id FK
+    timestamp created_at
+  }
+
+  ROOM {
+    uuid id PK
+    uuid property_id FK
+    string code
+    int floor
+    string status
+    decimal rent_price
+    decimal electric_price
+    decimal water_price
+    decimal service_fee
+    timestamp created_at
+  }
+
+  TENANT {
+    uuid id PK
+    string full_name
+    string national_id
+    string phone
+    date dob
+    string address
+    string emergency_contact
+    string emergency_phone
+    timestamp created_at
+  }
+
+  CONTRACT {
+    uuid id PK
+    uuid room_id FK
+    uuid tenant_id FK
+    date start_date
+    date end_date
+    decimal deposit
+    decimal rent_price
+    string status
+    string notes
+    timestamp created_at
+  }
+
+  UTILITY_RECORD {
+    uuid id PK
+    uuid contract_id FK
+    uuid room_id FK
+    int billing_month
+    int billing_year
+    decimal electric_prev
+    decimal electric_curr
+    decimal water_prev
+    decimal water_curr
+    bool is_overridden
+    string override_reason
+    timestamp recorded_at
+  }
+
+  INVOICE {
+    uuid id PK
+    uuid contract_id FK
+    uuid room_id FK
+    string invoice_no
+    int billing_month
+    int billing_year
+    decimal rent_amount
+    decimal electric_amount
+    decimal water_amount
+    decimal service_amount
+    decimal discount
+    decimal total
+    string status
+    date due_date
+    int version
+    timestamp issued_at
+  }
+
+  INVOICE_LINE {
+    uuid id PK
+    uuid invoice_id FK
+    string item_name
+    string item_type
+    decimal quantity
+    decimal unit_price
+    decimal amount
+  }
+
+  PAYMENT {
+    uuid id PK
+    uuid invoice_id FK
+    uuid recorded_by FK
+    decimal amount
+    date payment_date
+    string method
+    string notes
+    timestamp created_at
+  }
+
+  TICKET {
+    uuid id PK
+    uuid room_id FK
+    uuid assigned_to FK
+    string title
+    string description
+    string priority
+    string status
+    decimal material_cost
+    decimal labor_cost
+    timestamp created_at
+    timestamp resolved_at
+  }
+
+  PROPERTY ||--o{ ROOM : "has"
+  PROPERTY ||--o{ USER : "managed by"
+  ROOM ||--o{ CONTRACT : "has"
+  TENANT ||--o{ CONTRACT : "signs"
+  CONTRACT ||--o{ UTILITY_RECORD : "records"
+  CONTRACT ||--o{ INVOICE : "generates"
+  ROOM ||--o{ UTILITY_RECORD : "tracks"
+  ROOM ||--o{ INVOICE : "billed to"
+  ROOM ||--o{ TICKET : "has"
+  INVOICE ||--o{ INVOICE_LINE : "contains"
+  INVOICE ||--o{ PAYMENT : "receives"
+  USER ||--o{ PAYMENT : "records"
+  USER ||--o{ TICKET : "assigned to"
+`;
+
+const { svg } = await mermaid.render('erd-svg', diagram);
+document.getElementById('erd').innerHTML = svg;
+
+document.querySelectorAll('#erd svg .node').forEach(node => {
+  const firstPath = node.querySelector('path[d]');
+  if (!firstPath) return;
+  const d = firstPath.getAttribute('d');
+  const nums = d.match(/-?[\d.]+/g)?.map(Number);
+  if (!nums || nums.length < 8) return;
+  const xs = [nums[0], nums[2], nums[4], nums[6]];
+  const ys = [nums[1], nums[3], nums[5], nums[7]];
+  const x = Math.min(...xs), y = Math.min(...ys);
+  const w = Math.max(...xs) - x, h = Math.max(...ys) - y;
+  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  rect.setAttribute('x', x); rect.setAttribute('y', y);
+  rect.setAttribute('width', w); rect.setAttribute('height', h);
+  rect.setAttribute('rx', '8');
+  for (const a of ['fill','stroke','stroke-width','class','style']) {
+    if (firstPath.hasAttribute(a)) rect.setAttribute(a, firstPath.getAttribute(a));
+  }
+  firstPath.replaceWith(rect);
+});
+
+document.querySelectorAll('#erd svg .row-rect-odd path, #erd svg .row-rect-even path').forEach(p => {
+  p.setAttribute('stroke', 'none');
+});
+</script>
