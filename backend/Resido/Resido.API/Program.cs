@@ -26,11 +26,14 @@ namespace Resido.API
 
             // Services
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IPropertyService, PropertyService>();
+            builder.Services.AddScoped<IRoomService, RoomService>();
 
             // Repositories
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+            
 
             // JWT Authentication
             var jwtKey = builder.Configuration["Jwt:Key"]!;
