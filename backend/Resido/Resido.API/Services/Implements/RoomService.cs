@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using Resido.API.DTOs.Requests;
+﻿using Resido.API.DTOs.Requests;
 using Resido.API.DTOs.Responses;
 using Resido.API.Enums;
 using Resido.API.Models;
@@ -61,14 +60,51 @@ namespace Resido.API.Services.Implements
             await _roomRepository.DeleteAsync(room);
         }
 
-        public Task<IEnumerable<RoomResponse>> GetAllAsync()
+        public async Task<IEnumerable<RoomResponse>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            var rooms = await _roomRepository.GetAllAsync();
+
+            var response = rooms.Select(r => new RoomResponse
+            {
+                Id = r.Id,
+                PropertyId = r.PropertyId,
+                Code = r.Code,
+                Floor = r.Floor,
+                Status = r.Status.ToString(),
+                RentPrice = r.RentPrice,
+                ElectricPrice = r.ElectricPrice,
+                WaterPrice = r.WaterPrice,
+                ServiceFee = r.ServiceFee,
+                CreatedAt = r.CreatedAt,
+                UpdatedAt = r.UpdatedAt,
+            });
+
+            return response;
         }
 
-        public Task<RoomResponse?> GetByIdAsync(Guid id)
+        public async Task<RoomResponse?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var room = await _roomRepository.GetByIdAsync(id);
+
+            if (room == null)
+                throw new KeyNotFoundException($"Phòng với ID {id} không tồn tại");
+
+            var response = new RoomResponse
+            {
+                Id = room.Id,
+                PropertyId = room.PropertyId,
+                Code = room.Code,
+                Floor = room.Floor,
+                Status = room.Status.ToString(),
+                RentPrice = room.RentPrice,
+                ElectricPrice = room.ElectricPrice,
+                WaterPrice = room.WaterPrice,
+                ServiceFee = room.ServiceFee,
+                CreatedAt = room.CreatedAt,
+                UpdatedAt = room.UpdatedAt,
+            };
+
+            return response;
         }
 
         public Task<IEnumerable<RoomResponse>> GetByPropertyIdAsync(Guid propertyId)
