@@ -69,7 +69,8 @@ namespace Resido.API.Services.Implements
             var property = await _propertyRepository.GetByIdAsync(id);
 
             // Nếu không tìm thấy return null
-            if(property == null) return null;
+            if(property == null)
+                throw new KeyNotFoundException($"Property với ID {id} không tồn tại");
 
             // Map Entity -> Response
             var response = new PropertyResponse
