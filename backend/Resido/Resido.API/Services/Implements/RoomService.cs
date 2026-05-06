@@ -20,7 +20,6 @@ namespace Resido.API.Services.Implements
 
         public async Task CreateAsync(RoomRequest request)
         {
-            // ✅ Thêm await
             var property = await _propertyRepository.GetByIdAsync(request.PropertyId);
 
             if (property == null)
