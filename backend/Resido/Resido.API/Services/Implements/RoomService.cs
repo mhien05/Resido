@@ -1,9 +1,15 @@
-﻿using Resido.API.DTOs.Requests;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Identity.Client;
+using Resido.API.DTOs.Requests;
 using Resido.API.DTOs.Responses;
 using Resido.API.Enums;
 using Resido.API.Models;
 using Resido.API.Repositories.Interfaces;
 using Resido.API.Services.Interfaces;
+using System.Drawing;
+using System.Net.NetworkInformation;
 
 namespace Resido.API.Services.Implements
 {
@@ -51,7 +57,7 @@ namespace Resido.API.Services.Implements
         {
             var room = await _roomRepository.GetByIdAsync(id);
 
-            if(room == null)
+            if (room == null)
                 throw new KeyNotFoundException($"Phòng với ID {id} không tồn tại");
 
             if (room.Status == RoomStatus.Occupied)
@@ -107,19 +113,77 @@ namespace Resido.API.Services.Implements
             return response;
         }
 
-        public Task<IEnumerable<RoomResponse>> GetByPropertyIdAsync(Guid propertyId)
+        public async Task<IEnumerable<RoomResponse>> GetByPropertyIdAsync(Guid propertyId)
         {
-            throw new NotImplementedException();
+            var room = await GetByPropertyIdAsync(propertyId);
+
+            if(room == null)
+                throw new KeyNotFoundException($"Phòng với PropertyID {propertyId} không tồn tại");
+
+            var response = room.Select(r => new RoomResponse
+            {
+                Id = r.Id,
+                PropertyId = r.PropertyId,
+                Code = r.Code,
+                Floor = r.Floor,
+                Status = r.Status.ToString(),
+                RentPrice = r.RentPrice,
+                ElectricPrice = r.ElectricPrice,
+                WaterPrice = r.WaterPrice,
+                ServiceFee = r.ServiceFee,
+                CreatedAt = r.CreatedAt,
+                UpdatedAt = r.UpdatedAt
+            });
+
+            return response;
         }
 
-        public Task<IEnumerable<RoomResponse>> GetByStatusAsync(RoomStatus status)
+        public async Task<IEnumerable<RoomResponse>> GetByStatusAsync(RoomStatus status)
         {
-            throw new NotImplementedException();
+            var room = await _roomRepository.GetByStatusAsync(status);
+
+            if(room == null)
+                throw new KeyNotFoundException($"Các phòng với status {status}  không tồn tại");
+
+            var response = room.Select(r => new RoomResponse
+            {
+                Id = r.Id,
+                PropertyId = r.PropertyId,
+                Code = r.Code,
+                Floor = r.Floor,
+                Status = r.Status.ToString(),
+                RentPrice = r.RentPrice,
+                ElectricPrice = r.ElectricPrice,
+                WaterPrice = r.WaterPrice,
+                ServiceFee = r.ServiceFee,
+                CreatedAt = r.CreatedAt,
+                UpdatedAt = r.UpdatedAt
+            });
+
+            return response;
         }
 
-        public Task UpdateAsync(Guid id, RoomRequest request)
+        public async Task UpdateAsync(Guid id, RoomRequest request)
         {
-            throw new NotImplementedException();
+            // Tìm phòng với ID
+            var room = await _roomRepository.GetByIdAsync(id);
+
+            // Nếu không tìm thấy thì throw excep
+            if (room == null)
+                throw new KeyNotFoundException($"Phòng với ID {id} không tồn tại");
+
+            // Map các field từ request
+            room.PropertyId = request.PropertyId;
+            room.Code = request.Code;
+            room.Floor = request.Floor;
+            room.Status = request.Status;
+            room.RentPrice = request.RentPrice;
+            room.ElectricPrice = request.ElectricPrice;
+            room.WaterPrice = request.WaterPrice;
+            room.ServiceFee = request.ServiceFee;
+
+            // Update giá trị mới
+            await _roomRepository.UpdateAsync(room);
         }
     }
 }
