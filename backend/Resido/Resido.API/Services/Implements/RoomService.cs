@@ -1,4 +1,5 @@
-﻿using Resido.API.DTOs.Requests;
+﻿using Azure.Core;
+using Resido.API.DTOs.Requests;
 using Resido.API.DTOs.Responses;
 using Resido.API.Enums;
 using Resido.API.Models;
@@ -20,6 +21,7 @@ namespace Resido.API.Services.Implements
 
         public async Task CreateAsync(RoomRequest request)
         {
+            // Kiểm tra entity Property với {id} có tồn tại không
             var property = await _propertyRepository.GetByIdAsync(request.PropertyId);
 
             if (property == null)
@@ -46,9 +48,17 @@ namespace Resido.API.Services.Implements
             await _roomRepository.AddAsync(room);
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var room = await _roomRepository.GetByIdAsync(id);
+
+            if(room == null)
+                throw new KeyNotFoundException($"Phòng với ID {id} không tồn tại");
+
+            if (room.Status == RoomStatus.Occupied)
+                throw new InvalidOperationException("Không thể xóa phòng đang có người thuê");
+
+            await _roomRepository.DeleteAsync(room);
         }
 
         public Task<IEnumerable<RoomResponse>> GetAllAsync()
