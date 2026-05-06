@@ -7,7 +7,7 @@ using Resido.API.Services.Interfaces;
 namespace Resido.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/v1/auth")]
 
     /// <summary>
     /// Controller xử lý các API liên quan đến xác thực người dùng
@@ -16,7 +16,6 @@ namespace Resido.API.Controllers
     {
         // DI AuthService
         private readonly IAuthService _authService; // Service xử lý logic auth
-
 
         /// <summary>
         /// Constructor - ASP.NET tự inject IAuthService qua DI Container
