@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Resido.API.DTOs.Requests;
+using Resido.API.Repositories.Implements;
 using Resido.API.Services.Interfaces;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Resido.API.Controllers
@@ -29,6 +32,14 @@ namespace Resido.API.Controllers
             var response = await _roomService.GetByIdAsync(id);
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] RoomRequest roomRequest)
+        {
+            await _roomService.CreateAsync(roomRequest);
+
+            return StatusCode(201, new { message = "Tạo phòng thành công" });
         }
     }
 }
