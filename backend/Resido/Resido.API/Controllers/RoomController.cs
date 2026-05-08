@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resido.API.Services.Interfaces;
+using System.Runtime.InteropServices;
 
 namespace Resido.API.Controllers
 {
@@ -14,10 +15,18 @@ namespace Resido.API.Controllers
             _roomService = roomService;
         }
 
-        [HttpGet("room")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var response = await _roomService.GetAllAsync();
+
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var response = await _roomService.GetByIdAsync(id);
 
             return Ok(response);
         }
