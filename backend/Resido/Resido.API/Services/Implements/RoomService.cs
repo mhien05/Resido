@@ -117,7 +117,7 @@ namespace Resido.API.Services.Implements
         {
             var room = await _roomRepository.GetByPropertyIdAsync(propertyId);
 
-            if(room == null)
+            if(!room.Any())
                 throw new KeyNotFoundException($"Phòng với PropertyID {propertyId} không tồn tại");
 
             var response = room.Select(r => new RoomResponse
@@ -142,7 +142,7 @@ namespace Resido.API.Services.Implements
         {
             var room = await _roomRepository.GetByStatusAsync(status);
 
-            if(room == null)
+            if (!room.Any())
                 throw new KeyNotFoundException($"Các phòng với status {status}  không tồn tại");
 
             var response = room.Select(r => new RoomResponse
