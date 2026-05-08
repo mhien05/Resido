@@ -33,7 +33,12 @@ namespace Resido.API
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IPropertyRepository, PropertyRepository>();
             builder.Services.AddScoped<IRoomRepository, RoomRepository>();
-            
+
+            // Thêm config lower case toàn bộ route path của API
+            builder.Services.Configure<RouteOptions>(options =>
+            {
+                options.LowercaseUrls = true;
+            });
 
             // JWT Authentication
             var jwtKey = builder.Configuration["Jwt:Key"]!;
