@@ -1,15 +1,9 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Identity.Client;
-using Resido.API.DTOs.Requests;
+﻿using Resido.API.DTOs.Requests;
 using Resido.API.DTOs.Responses;
 using Resido.API.Enums;
 using Resido.API.Models;
 using Resido.API.Repositories.Interfaces;
 using Resido.API.Services.Interfaces;
-using System.Drawing;
-using System.Net.NetworkInformation;
 
 namespace Resido.API.Services.Implements
 {
