@@ -115,7 +115,7 @@ namespace Resido.API.Services.Implements
 
         public async Task<IEnumerable<RoomResponse>> GetByPropertyIdAsync(Guid propertyId)
         {
-            var room = await GetByPropertyIdAsync(propertyId);
+            var room = await _roomRepository.GetByPropertyIdAsync(propertyId);
 
             if(room == null)
                 throw new KeyNotFoundException($"Phòng với PropertyID {propertyId} không tồn tại");
