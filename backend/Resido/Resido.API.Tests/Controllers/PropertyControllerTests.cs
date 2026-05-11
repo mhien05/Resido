@@ -173,4 +173,22 @@ public class PropertyControllerTests :  IClassFixture<CustomWebApplicationFactor
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
+    
+    // ========== DELETE /api/property/{id} ==========
+    [Fact]
+    public async Task Delete_WhenFound_ShouldReturn204()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+
+        _factory.MockPropertyService
+            .Setup(s => s.DeleteAsync(id))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var response = await _client.DeleteAsync($"/api/property/{id}");
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+    }
 }
