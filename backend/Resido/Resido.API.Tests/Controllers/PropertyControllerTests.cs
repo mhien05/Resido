@@ -62,4 +62,35 @@ public class PropertyControllerTests :  IClassFixture<CustomWebApplicationFactor
         var body = await response.Content.ReadFromJsonAsync<List<PropertyResponse>>();
         body.Should().BeEmpty();
     }
+    
+    // ========== GET /api/property/{id} ==========
+
+    [Fact]
+    public async Task GetById_WhenFound_ShouldReturn200()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var mockProperty = new PropertyResponse
+        {
+            Id = id,
+            Name = "Nhà trọ A",
+            Address = "HCM"
+        };
+
+        _factory.MockPropertyService
+            .Setup(s => s.GetByIdAsync(id))
+            .ReturnsAsync(mockProperty);
+
+        // Act
+        var response = await _client.GetAsync($"/api/property/{id}");
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var body = await response.Content.ReadFromJsonAsync<PropertyResponse>();
+        body!.Id.Should().Be(id);
+        body.Name.Should().Be("Nhà trọ A");
+    }
+
+    
+
 }
