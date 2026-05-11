@@ -132,6 +132,28 @@ public class PropertyControllerTests :  IClassFixture<CustomWebApplicationFactor
         response.StatusCode.Should().Be(HttpStatusCode.Created);
     }
 
-    
+    // ========== PUT /api/property/{id} ==========
+
+    [Fact]
+    public async Task Update_WhenFound_ShouldReturn200()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var request = new PropertyRequest
+        {
+            Name = "Tên mới",
+            Address = "Địa chỉ mới"
+        };
+
+        _factory.MockPropertyService
+            .Setup(s => s.UpdateAsync(id, It.IsAny<PropertyRequest>()))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var response = await _client.PutAsJsonAsync($"/api/property/{id}", request);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
 
 }
