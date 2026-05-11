@@ -6,6 +6,7 @@ using Resido.API.Tests.Helpers;
 using Xunit.Abstractions;
 using FluentAssertions;
 using Moq;
+using Resido.API.DTOs.Requests;
 
 namespace Resido.API.Tests.Controllers;
 
@@ -107,6 +108,30 @@ public class PropertyControllerTests :  IClassFixture<CustomWebApplicationFactor
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
+    
+    // ========== POST /api/property ==========
+
+    [Fact]
+    public async Task Create_WithValidRequest_ShouldReturn201()
+    {
+        // Arrange
+        var request = new PropertyRequest
+        {
+            Name = "Nhà trọ mới",
+            Address = "123 Nguyễn Văn A, HCM"
+        };
+
+        _factory.MockPropertyService
+            .Setup(s => s.CreateAsync(It.IsAny<PropertyRequest>()))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var response = await _client.PostAsJsonAsync("/api/property", request);
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.Created);
+    }
+
     
 
 }
