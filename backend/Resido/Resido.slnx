@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="Resido.API.Tests/Resido.API.Tests.csproj" />
   <Project Path="Resido.API/Resido.API.csproj" />
 </Solution>
