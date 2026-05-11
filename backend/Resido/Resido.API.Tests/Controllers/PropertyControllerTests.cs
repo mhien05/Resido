@@ -45,4 +45,21 @@ public class PropertyControllerTests :  IClassFixture<CustomWebApplicationFactor
         body.Should().HaveCount(2);
         body![0].Name.Should().Be("Nhà trọ A");
     }
+    
+    [Fact]
+    public async Task GetAll_WhenEmpty_ShouldReturn200_WithEmptyList()
+    {
+        // Arrange
+        _factory.MockPropertyService
+            .Setup(s => s.GetAllAsync())
+            .ReturnsAsync(new List<PropertyResponse>());
+        
+        // Act
+        var response = await _client.GetAsync("/api/property");
+        
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var body = await response.Content.ReadFromJsonAsync<List<PropertyResponse>>();
+        body.Should().BeEmpty();
+    }
 }
