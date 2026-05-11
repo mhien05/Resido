@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Resido.API.DTOs.Requests;
 using Resido.API.Enums;
-using Resido.API.Repositories.Implements;
 using Resido.API.Services.Interfaces;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace Resido.API.Controllers
 {
