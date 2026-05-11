@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Resido.API.DTOs.Requests;
 using Resido.API.Services.Interfaces;
+using System.Runtime.CompilerServices;
 
 namespace Resido.API.Controllers
 {
@@ -42,5 +43,16 @@ namespace Resido.API.Controllers
 
             return StatusCode(201, new { message = "Thêm property thành công" });
         }
+
+        // Update
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] PropertyRequest request)
+        {
+            await _propertyService.UpdateAsync(id, request);
+
+            return StatusCode(200, new { message = "Cập nhật thông tin property thành công" });
+        }
+
+
     }
 }
