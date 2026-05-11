@@ -10,6 +10,7 @@ using Resido.API.Repositories.Interfaces;
 using Resido.API.Services.Implements;
 using Resido.API.Services.Interfaces;
 using System.Text;
+using Resido.API.Middleware;
 
 namespace Resido.API
 {
@@ -108,6 +109,10 @@ namespace Resido.API
             app.UseHttpsRedirection();
             app.UseAuthentication(); // phải trước UseAuthorization
             app.UseAuthorization();
+            
+            // Middleware handle exception
+            app.UseMiddleware<ExceptionMiddleware>();
+            
             app.MapControllers();
             app.Run();
         }
