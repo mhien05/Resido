@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Resido.API.Services.Interfaces;
 
 namespace Resido.API.Controllers
 {
@@ -7,6 +8,20 @@ namespace Resido.API.Controllers
     [Route("api/[controller]")]
     public class PropertyController : ControllerBase
     {
+        private readonly IPropertyService _propertyService;
 
+        public PropertyController(IPropertyService propertyService)
+        {
+            _propertyService = propertyService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var response = await _propertyService.GetAllAsync();
+
+            return Ok(response);
+        }
+        
     }
 }
