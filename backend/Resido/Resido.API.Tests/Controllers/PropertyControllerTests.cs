@@ -156,4 +156,21 @@ public class PropertyControllerTests :  IClassFixture<CustomWebApplicationFactor
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
+    [Fact]
+    public async Task Update_WhenNotFound_ShouldReturn404()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+
+        _factory.MockPropertyService
+            .Setup(s => s.UpdateAsync(id, It.IsAny<PropertyRequest>()))
+            .ThrowsAsync(new KeyNotFoundException($"Property với ID {id} không tồn tại"));
+
+        // Act
+        var response = await _client.PutAsJsonAsync($"/api/property/{id}",
+            new PropertyRequest { Name = "X", Address = "Y" });
+
+        // Assert
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
 }
