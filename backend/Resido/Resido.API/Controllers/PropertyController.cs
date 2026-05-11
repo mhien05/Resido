@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Resido.API.DTOs.Requests;
 using Resido.API.Services.Interfaces;
 
 namespace Resido.API.Controllers
@@ -33,5 +34,13 @@ namespace Resido.API.Controllers
             return Ok(response);
         }
 
+        // Create
+        [HttpPost]
+        public async Task<IActionResult> Create(PropertyRequest request)
+        {
+            await _propertyService.CreateAsync(request);
+
+            return StatusCode(201, new { message = "Thêm property thành công" });
+        }
     }
 }
