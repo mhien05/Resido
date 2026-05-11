@@ -53,6 +53,13 @@ namespace Resido.API.Controllers
             return StatusCode(200, new { message = "Cập nhật thông tin property thành công" });
         }
 
+        // Delete
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            await _propertyService.DeleteAsync(id);
 
+            return StatusCode(204, new { message = $"Xóa property có id {id} thành công" });
+        }
     }
 }
