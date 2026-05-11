@@ -26,6 +26,7 @@ namespace Resido.API.Repositories.Implements
         {
             // Set trường đã bị xóa chưa = true
             property.IsDeleted = true;
+            property.IsActive = false;
 
             // Set thời gian xóa
             property.DeletedAt = DateTime.UtcNow;
