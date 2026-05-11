@@ -15,6 +15,7 @@ namespace Resido.API.Controllers
             _propertyService = propertyService;
         }
 
+        // Get all
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -22,6 +23,15 @@ namespace Resido.API.Controllers
 
             return Ok(response);
         }
-        
+
+        // Get by id
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var response = await _propertyService.GetByIdAsync(id);
+
+            return Ok(response);
+        }
+
     }
 }
