@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Resido.API.Constants;
 using Resido.API.DTOs.Requests;
 using Resido.API.Enums;
 using Resido.API.Services.Interfaces;
@@ -40,7 +41,8 @@ namespace Resido.API.Controllers
         {
             await _roomService.CreateAsync(roomRequest);
 
-            return StatusCode(201, new { message = "Tạo phòng thành công" });
+            // return StatusCode(201, new { message = "Tạo phòng thành công" });
+            return StatusCode(201, new { message = MessageConstants.Room.Created });
         }
 
         // Update
