@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Mvc;
 using Resido.API.Constants;
 using Resido.API.DTOs.Requests;
 using Resido.API.Enums;
@@ -42,7 +43,7 @@ namespace Resido.API.Controllers
             await _roomService.CreateAsync(roomRequest);
             
             // "Tạo phòng thành công"
-            return StatusCode(201, new { message = MessageConstants.Room.Created });
+            return StatusCode(201, new { message = Constants.Messages.RoomMessage.Created });
         }
 
         // Update
@@ -51,7 +52,7 @@ namespace Resido.API.Controllers
         {
             await _roomService.UpdateAsync(id, roomRequest);
 
-            return StatusCode(200, new { message = MessageConstants.Room.Updated });
+            return StatusCode(200, new { message = Constants.Messages.RoomMessage.Updated });
         }
 
         // Delete
@@ -60,7 +61,7 @@ namespace Resido.API.Controllers
         {
             await _roomService.DeleteAsync(id);
 
-            return StatusCode(204, new { message = MessageConstants.Room.Deleted });
+            return StatusCode(204, new { message = Constants.Messages.RoomMessage.Deleted });
         }
 
         // Get by status
