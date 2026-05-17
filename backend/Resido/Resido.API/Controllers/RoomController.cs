@@ -40,8 +40,8 @@ namespace Resido.API.Controllers
         public async Task<IActionResult> Create([FromBody] RoomRequest roomRequest)
         {
             await _roomService.CreateAsync(roomRequest);
-
-            // return StatusCode(201, new { message = "Tạo phòng thành công" });
+            
+            // "Tạo phòng thành công"
             return StatusCode(201, new { message = MessageConstants.Room.Created });
         }
 
@@ -51,7 +51,7 @@ namespace Resido.API.Controllers
         {
             await _roomService.UpdateAsync(id, roomRequest);
 
-            return StatusCode(200, new { message = "Cập nhật thông tin phòng thành công" });
+            return StatusCode(200, new { message = MessageConstants.Room.Updated });
         }
 
         // Delete
@@ -60,7 +60,7 @@ namespace Resido.API.Controllers
         {
             await _roomService.DeleteAsync(id);
 
-            return StatusCode(204, new { message = $"Xóa phòng có id {id} thành công" });
+            return StatusCode(204, new { message = MessageConstants.Room.Deleted });
         }
 
         // Get by status
